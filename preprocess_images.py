@@ -16,10 +16,7 @@ def load_image(image_path):
   img = inception_v3.preprocess_input(img)
   return img, image_path
 
-
-def preprocess_images(base_path, train_images_path, ds_path, feature_path):
-  image_model = InceptionV3(include_top=False, weights='imagenet')
-  #Retreive and load images into tf.data.Dataset
+def get_images(base_path, train_images_path, ds_path, feature_path):
   img_name_list = getImages(os.path.join(base_path, train_images_path))
   print(len(img_name_list))
 
@@ -27,6 +24,13 @@ def preprocess_images(base_path, train_images_path, ds_path, feature_path):
   print(img_path_list[0])
   img_dataset = tf.data.Dataset.from_tensor_slices(img_path_list)
   img_dataset = img_dataset.map(load_image, num_parallel_calls=tf.data.AUTOTUNE).batch(16)
+
+  return img_name_list, img_path_list, img_dataset
+
+
+def preprocess_images(img_name_list, img_path_list, img_dataset):
+  image_model = InceptionV3(include_top=False, weights='imagenet')
+  #Retreive and load images into tf.data.Dataset
 
   #Create Model
   new_input = image_model.input
