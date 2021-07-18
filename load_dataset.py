@@ -5,22 +5,22 @@ import os
 train_file_path = './Flickr_8k.trainImages.txt'
 
 def loadCaptions(file_path):
-    capset = {}
+    capdict = {}
     with open(file_path) as captions:
         c = captions.readline()
         while c:
             try:
                 [file, cap] = c.split('\t')
                 [file, num] = file.split('#')
-                if capset.get(file):
-                    capset[file].append(cap)
+                if capdict.get(file):
+                    capdict[file].append(cap)
                 else:
-                    capset[file] = [cap]
+                    capdict[file] = [cap]
                 c = captions.readline()
             except:
                 continue
-    # print(len(capset.keys()))
-    return capset
+    # print(len(capdict.keys()))
+    return capdict
 
 def getImages(file_path):
     img_list = []
@@ -37,5 +37,5 @@ def getImages(file_path):
     return img_list
 
 if __name__=='__main__':
-    # capset = loadCaptions(caption_file_path)
+    # capdict = loadCaptions(caption_file_path)
     img_list = getImages(train_file_path)

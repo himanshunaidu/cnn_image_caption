@@ -15,7 +15,8 @@ def captions_clean (image_dict):
       caption_nopunct = re.sub(r"[^a-zA-Z0-9]+", ' ', caption.lower())
       
       # Remove all one-letter words
-      caption_new = re.sub(r"\s[a-z]\s", ' ', caption_nopunct)
+      caption_new = re.sub(r"\b[a-z]\b", '', caption_nopunct).strip()
+      caption_new = re.sub(r"\s\s", '', caption_new)
       
       # Replace the old caption in the captions list with this new cleaned caption
       captions[i] = caption_new
@@ -30,8 +31,8 @@ def add_token (captions):
 
 # Get captions from images in image_dict that are present in image_names
 def subset_data_dict (image_dict, image_names):
-  # dict = { image_name:add_token(captions) for image_name,captions in image_dict.items() if image_name in image_names}
-  dict = { image_name:captions for image_name,captions in image_dict.items() if image_name in image_names}
+  dict = { image_name:add_token(captions) for image_name,captions in image_dict.items() if image_name in image_names}
+  # dict = { image_name:captions for image_name,captions in image_dict.items() if image_name in image_names}
   return (dict)
 
 
@@ -57,7 +58,7 @@ def create_tokenizer(data_dict):
   # Get the size of the vocabulary
   vocab_size = len(tokenizer.word_index) + 1
 
-  return (tokenizer, vocab_size, max_caption_words)
+  return tokenizer, vocab_size, max_caption_words
 
 
 def pad_text (text, max_length): 
