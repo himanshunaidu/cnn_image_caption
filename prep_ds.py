@@ -33,18 +33,18 @@ def replace_last(source_string, replace_what, replace_with):
     return head + replace_with + tail
 
 # Load the numpy files
-def map_func(img_name, cap):
+def map_func(img_name, cap, ds_path, feature_path):
     # print(type(img_name))
     #Avoid decoding for now
     # img_tensor = np.load(img_name.decode('utf-8').replace(ds_path, feature_path, 1) + '.npy')
     img_tensor = np.load(img_name.replace(ds_path, feature_path, 1) + '.npy')
     return img_tensor, cap
 
-def lazy_load_ds(train_X, train_y, BUFFER_SIZE, BATCH_SIZE):
+def lazy_load_ds(train_X, train_y, BUFFER_SIZE, BATCH_SIZE, ds_path, feature_path):
     dataset = tf.data.Dataset.from_tensor_slices((train_X, train_y))
 
     # Use map to load the numpy files in parallel
-    dataset = dataset.map(lambda item1, item2: tf.numpy_function(map_func, [item1, item2], [tf.float32, tf.int32]),num_parallel_calls=tf.data.AUTOTUNE)
+    dataset = dataset.map(lambda item1, item2: tf.numpy_function(map_func, [item1, item2, ds_path, feature_path], [tf.float32, tf.int32]),num_parallel_calls=tf.data.AUTOTUNE)
 
     # Shuffle and batch
     dataset = dataset.shuffle(BUFFER_SIZE).batch(BATCH_SIZE)
