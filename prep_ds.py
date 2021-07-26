@@ -34,7 +34,7 @@ def replace_last(source_string, replace_what, replace_with):
 
 # Load the numpy files
 def map_func(img_name, cap):
-    print(type(img_name))
+    # print(type(img_name))
     #Avoid decoding for now
     # img_tensor = np.load(img_name.decode('utf-8').replace(ds_path, feature_path, 1) + '.npy')
     img_tensor = np.load(img_name.replace(ds_path, feature_path, 1) + '.npy')
