@@ -36,8 +36,8 @@ def replace_last(source_string, replace_what, replace_with):
 def map_func(img_name, cap, ds_path, feature_path):
     # print(type(img_name))
     #Avoid decoding for now
-    # img_tensor = np.load(img_name.decode('utf-8').replace(ds_path, feature_path, 1) + '.npy')
-    img_tensor = np.load(img_name.replace(ds_path, feature_path, 1) + '.npy')
+    img_tensor = np.load(img_name.decode('utf-8').replace(ds_path.decode('utf-8'), feature_path.decode('utf-8'), 1) + '.npy')
+    # img_tensor = np.load(img_name.replace(ds_path, feature_path, 1) + '.npy')
     return img_tensor, cap
 
 def lazy_load_ds(train_X, train_y, BUFFER_SIZE, BATCH_SIZE, ds_path, feature_path):
